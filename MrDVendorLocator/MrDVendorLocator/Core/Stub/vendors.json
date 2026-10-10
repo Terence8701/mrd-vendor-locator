@@ -1,0 +1,81 @@
+{
+  "vendors": [
+    {
+      "id": "ven-001",
+      "name": "Mr D Pizza — Cape Town CBD",
+      "address": "12 Loop St, Cape Town, 8000",
+      "coordinate": { "lat": -33.918861, "lng": 18.423300 },
+      "isFavorite": false,
+      "updatedAt": "2026-09-28T12:00:00Z"
+    },
+    {
+      "id": "ven-002",
+      "name": "Harbour Grill — V&A Waterfront",
+      "address": "19 Dock Rd, V&A Waterfront, Cape Town, 8001",
+      "coordinate": { "lat": -33.903600, "lng": 18.420700 },
+      "isFavorite": true,
+      "updatedAt": "2026-09-30T08:15:00Z"
+    },
+    {
+      "id": "ven-003",
+      "name": "Sea Point Sushi Bar",
+      "address": "155 Main Rd, Sea Point, Cape Town, 8005",
+      "coordinate": { "lat": -33.915000, "lng": 18.389000 },
+      "isFavorite": false,
+      "updatedAt": "2026-10-01T17:40:00Z"
+    },
+    {
+      "id": "ven-004",
+      "name": "Stellenbosch Bakehouse",
+      "address": "100 Dorp St, Stellenbosch, 7600",
+      "isFavorite": false,
+      "updatedAt": "2026-10-02T09:00:00Z"
+    },
+    {
+      "id": "ven-005",
+      "name": "Hatfield Burger Co.",
+      "address": "1122 Burnett St, Hatfield, Pretoria, 0083",
+      "coordinate": { "lat": -25.748700, "lng": 28.238000 },
+      "isFavorite": false,
+      "updatedAt": "2026-10-03T13:20:00Z"
+    },
+    {
+      "id": "ven-006",
+      "name": "Menlyn Wok & Noodle",
+      "address": "Atterbury Rd & Lois Ave, Menlyn, Pretoria, 0181",
+      "coordinate": { "lat": -25.783000, "lng": 28.277000 },
+      "isFavorite": true,
+      "updatedAt": "2026-10-04T19:05:00Z"
+    },
+    {
+      "id": "ven-007",
+      "name": "Brooklyn Curry House",
+      "address": "338 Bronkhorst St, Brooklyn, Pretoria, 0181",
+      "isFavorite": false,
+      "updatedAt": "2026-10-05T11:30:00Z"
+    },
+    {
+      "id": "ven-008",
+      "name": "Rosebank Taco Kitchen",
+      "address": "50 Bath Ave, Rosebank, Johannesburg, 2196",
+      "coordinate": { "lat": -26.146000, "lng": 28.043600 },
+      "isFavorite": false,
+      "updatedAt": "2026-10-06T14:45:00Z"
+    },
+    {
+      "id": "ven-009",
+      "name": "Sandton Salad Studio",
+      "address": "83 Rivonia Rd, Sandhurst, Sandton, 2196",
+      "coordinate": { "lat": -26.107600, "lng": 28.056700 },
+      "isFavorite": false,
+      "updatedAt": "2026-10-07T10:10:00Z"
+    },
+    {
+      "id": "ven-010",
+      "name": "Umhlanga Bunny Chow Spot",
+      "address": "Lighthouse Rd, Umhlanga Rocks, Durban, 4320",
+      "isFavorite": false,
+      "updatedAt": "2026-10-08T16:00:00Z"
+    }
+  ]
+}
