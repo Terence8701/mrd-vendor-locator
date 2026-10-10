@@ -12,6 +12,7 @@
 // Without it, the app still builds and runs: the map shows no tiles and geocoding
 // falls back to MockGeocoder.
 
-GMS_API_KEY =
+GMS_API_KEY = 
+
 
 #include? "Secrets.xcconfig"

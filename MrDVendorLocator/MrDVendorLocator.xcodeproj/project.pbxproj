@@ -8,13 +8,33 @@
 
 /* Begin PBXBuildFile section */
 		11C5898E307AD33C00E5CE3D /* GoogleMaps in Frameworks */ = {isa = PBXBuildFile; productRef = 11C5898D307AD33C00E5CE3D /* GoogleMaps */; };
+		11C58991307ADCEB00E5CE3D /* GooglePlaces in Frameworks */ = {isa = PBXBuildFile; productRef = 11C58990307ADCEB00E5CE3D /* GooglePlaces */; };
+		11C58993307ADCEB00E5CE3D /* GooglePlacesSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 11C58992307ADCEB00E5CE3D /* GooglePlacesSwift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		11DE4AE6307AEAE000BCB2AB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 11F549CD307ACB49002850FC /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 11F549D4307ACB49002850FC;
+			remoteInfo = MrDVendorLocator;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
+		11C58994307ADD7900E5CE3D /* App.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = App.xcconfig; sourceTree = "<group>"; };
+		11C58995307ADD7900E5CE3D /* Secrets.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Secrets.xcconfig; sourceTree = "<group>"; };
+		11DE4AE2307AEAE000BCB2AB /* MrDVendorLocatorTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MrDVendorLocatorTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		11F549D5307ACB49002850FC /* MrDVendorLocator.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MrDVendorLocator.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
+		11DE4AE3307AEAE000BCB2AB /* MrDVendorLocatorTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = MrDVendorLocatorTests;
+			sourceTree = "<group>";
+		};
 		11F549D7307ACB49002850FC /* MrDVendorLocator */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = MrDVendorLocator;
@@ -23,19 +43,38 @@
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		11DE4ADF307AEAE000BCB2AB /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			files = (
+			);
+		};
 		11F549D2307ACB49002850FC /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			files = (
 				11C5898E307AD33C00E5CE3D /* GoogleMaps in Frameworks */,
+				11C58991307ADCEB00E5CE3D /* GooglePlaces in Frameworks */,
+				11C58993307ADCEB00E5CE3D /* GooglePlacesSwift in Frameworks */,
 			);
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		11C58996307ADD7900E5CE3D /* Config */ = {
+			isa = PBXGroup;
+			children = (
+				11C58994307ADD7900E5CE3D /* App.xcconfig */,
+				11C58995307ADD7900E5CE3D /* Secrets.xcconfig */,
+			);
+			name = Config;
+			path = ../Config;
+			sourceTree = SOURCE_ROOT;
+		};
 		11F549CC307ACB49002850FC = {
 			isa = PBXGroup;
 			children = (
 				11F549D7307ACB49002850FC /* MrDVendorLocator */,
+				11C58996307ADD7900E5CE3D /* Config */,
+				11DE4AE3307AEAE000BCB2AB /* MrDVendorLocatorTests */,
 				11F549D6307ACB49002850FC /* Products */,
 			);
 			sourceTree = "<group>";
@@ -44,6 +83,7 @@
 			isa = PBXGroup;
 			children = (
 				11F549D5307ACB49002850FC /* MrDVendorLocator.app */,
+				11DE4AE2307AEAE000BCB2AB /* MrDVendorLocatorTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -51,6 +91,27 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		11DE4AE1307AEAE000BCB2AB /* MrDVendorLocatorTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 11DE4AE8307AEAE000BCB2AB /* Build configuration list for PBXNativeTarget "MrDVendorLocatorTests" */;
+			buildPhases = (
+				11DE4ADE307AEAE000BCB2AB /* Sources */,
+				11DE4ADF307AEAE000BCB2AB /* Frameworks */,
+				11DE4AE0307AEAE000BCB2AB /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				11DE4AE7307AEAE000BCB2AB /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				11DE4AE3307AEAE000BCB2AB /* MrDVendorLocatorTests */,
+			);
+			name = MrDVendorLocatorTests;
+			productName = MrDVendorLocatorTests;
+			productReference = 11DE4AE2307AEAE000BCB2AB /* MrDVendorLocatorTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		11F549D4307ACB49002850FC /* MrDVendorLocator */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 11F549E0307ACBED002850FC /* Build configuration list for PBXNativeTarget "MrDVendorLocator" */;
@@ -67,6 +128,8 @@
 			name = MrDVendorLocator;
 			packageProductDependencies = (
 				11C5898D307AD33C00E5CE3D /* GoogleMaps */,
+				11C58990307ADCEB00E5CE3D /* GooglePlaces */,
+				11C58992307ADCEB00E5CE3D /* GooglePlacesSwift */,
 			);
 			productName = MrDVendorLocator;
 			productReference = 11F549D5307ACB49002850FC /* MrDVendorLocator.app */;
@@ -82,6 +145,10 @@
 				LastSwiftUpdateCheck = 2700;
 				LastUpgradeCheck = 2700;
 				TargetAttributes = {
+					11DE4AE1307AEAE000BCB2AB = {
+						CreatedOnToolsVersion = 27.0;
+						TestTargetID = 11F549D4307ACB49002850FC;
+					};
 					11F549D4307ACB49002850FC = {
 						CreatedOnToolsVersion = 27.0;
 					};
@@ -98,6 +165,7 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				11C5898C307AD33C00E5CE3D /* XCRemoteSwiftPackageReference "ios-maps-sdk" */,
+				11C5898F307ADCEB00E5CE3D /* XCRemoteSwiftPackageReference "ios-places-sdk" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 11F549D6307ACB49002850FC /* Products */;
@@ -105,11 +173,17 @@
 			projectRoot = "";
 			targets = (
 				11F549D4307ACB49002850FC /* MrDVendorLocator */,
+				11DE4AE1307AEAE000BCB2AB /* MrDVendorLocatorTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		11DE4AE0307AEAE000BCB2AB /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			files = (
+			);
+		};
 		11F549D3307ACB49002850FC /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			files = (
@@ -118,6 +192,11 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		11DE4ADE307AEAE000BCB2AB /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			files = (
+			);
+		};
 		11F549D1307ACB49002850FC /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			files = (
@@ -125,7 +204,59 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		11DE4AE7307AEAE000BCB2AB /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 11F549D4307ACB49002850FC /* MrDVendorLocator */;
+			targetProxy = 11DE4AE6307AEAE000BCB2AB /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin XCBuildConfiguration section */
+		11DE4AE9307AEAE000BCB2AB /* Debug configuration for PBXNativeTarget "MrDVendorLocatorTests" */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 74VS5UXPE7;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.baloyi.mrdvendorlocator.MrDVendorLocatorTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MrDVendorLocator.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/MrDVendorLocator";
+			};
+			name = Debug;
+		};
+		11DE4AEA307AEAE000BCB2AB /* Release configuration for PBXNativeTarget "MrDVendorLocatorTests" */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 74VS5UXPE7;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.baloyi.mrdvendorlocator.MrDVendorLocatorTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MrDVendorLocator.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/MrDVendorLocator";
+			};
+			name = Release;
+		};
 		11F549DE307ACBED002850FC /* Debug configuration for PBXProject "MrDVendorLocator" */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -179,7 +310,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
@@ -237,7 +368,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
@@ -249,6 +380,7 @@
 		};
 		11F549E1307ACBED002850FC /* Debug configuration for PBXNativeTarget "MrDVendorLocator" */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 11C58994307ADD7900E5CE3D /* App.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -257,12 +389,13 @@
 				DEVELOPMENT_TEAM = 74VS5UXPE7;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "MrD VL";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -282,6 +415,7 @@
 		};
 		11F549E2307ACBED002850FC /* Release configuration for PBXNativeTarget "MrDVendorLocator" */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 11C58994307ADD7900E5CE3D /* App.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -290,12 +424,13 @@
 				DEVELOPMENT_TEAM = 74VS5UXPE7;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "MrD VL";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -316,6 +451,14 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		11DE4AE8307AEAE000BCB2AB /* Build configuration list for PBXNativeTarget "MrDVendorLocatorTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				11DE4AE9307AEAE000BCB2AB /* Debug configuration for PBXNativeTarget "MrDVendorLocatorTests" */,
+				11DE4AEA307AEAE000BCB2AB /* Release configuration for PBXNativeTarget "MrDVendorLocatorTests" */,
+			);
+			defaultConfigurationName = Release;
+		};
 		11F549D0307ACB49002850FC /* Build configuration list for PBXProject "MrDVendorLocator" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -343,6 +486,14 @@
 				minimumVersion = 11.2.0;
 			};
 		};
+		11C5898F307ADCEB00E5CE3D /* XCRemoteSwiftPackageReference "ios-places-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/googlemaps/ios-places-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 11.2.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -350,6 +501,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 11C5898C307AD33C00E5CE3D /* XCRemoteSwiftPackageReference "ios-maps-sdk" */;
 			productName = GoogleMaps;
+		};
+		11C58990307ADCEB00E5CE3D /* GooglePlaces */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 11C5898F307ADCEB00E5CE3D /* XCRemoteSwiftPackageReference "ios-places-sdk" */;
+			productName = GooglePlaces;
+		};
+		11C58992307ADCEB00E5CE3D /* GooglePlacesSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 11C5898F307ADCEB00E5CE3D /* XCRemoteSwiftPackageReference "ios-places-sdk" */;
+			productName = GooglePlacesSwift;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
