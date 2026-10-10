@@ -1,0 +1,17 @@
+// App.xcconfig
+//
+// Base build configuration for the MrDVendorLocator app target.
+//
+// The Google Maps Platform key is never committed. Put it in Config/Secrets.xcconfig
+// (gitignored) as:
+//
+//     GMS_API_KEY = <your key>
+//
+// The key needs "Maps SDK for iOS" and "Places API (New)" enabled, and should be
+// restricted to the bundle ID com.baloyi.mrdvendorlocator.
+// Without it, the app still builds and runs: the map shows no tiles and geocoding
+// falls back to MockGeocoder.
+
+GMS_API_KEY =
+
+#include? "Secrets.xcconfig"
