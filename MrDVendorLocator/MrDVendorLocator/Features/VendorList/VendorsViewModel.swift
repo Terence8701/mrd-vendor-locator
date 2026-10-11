@@ -94,9 +94,12 @@ final class VendorsViewModel {
             // Superseded by a newer load, which owns the state now.
         } catch {
             let error = UserFacingError(error)
-            if hasContent {
+            // A 401 means the session is gone, so vendors already on screen are cleared too.
+            if hasContent && error.action != .openSettings {
                 transientError = error
             } else {
+                locationTask?.cancel()
+                isResolvingLocations = false
                 state = .failed(error)
             }
         }

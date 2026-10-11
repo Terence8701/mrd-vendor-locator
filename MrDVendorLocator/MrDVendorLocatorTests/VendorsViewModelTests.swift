@@ -58,6 +58,20 @@ final class VendorsViewModelTests: XCTestCase {
         XCTAssertNotNil(viewModel.transientError)
     }
 
+    func testUnauthorizedRefreshClearsExistingVendors() async {
+        repository.fetchResult = .success([.stub(id: "a")])
+        await viewModel.loadIfNeeded()
+
+        repository.fetchResult = .failure(APIError.unauthorized)
+        await viewModel.reload()
+
+        XCTAssertTrue(viewModel.vendors.isEmpty, "Vendors must not stay visible once the session is gone")
+        guard case .failed(let error) = viewModel.state else {
+            return XCTFail("Expected .failed, got \(viewModel.state)")
+        }
+        XCTAssertEqual(error.action, .openSettings)
+    }
+
     func testToggleFavoriteUpdatesAndPersists() async {
         repository.fetchResult = .success([.stub(id: "a", isFavorite: false)])
         await viewModel.loadIfNeeded()
