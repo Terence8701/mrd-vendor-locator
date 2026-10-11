@@ -13,7 +13,7 @@ struct MrDVendorLocatorApp: App {
 
     var body: some Scene {
         WindowGroup {
-            RootTabView()
+            RootTabView(isMapAvailable: dependencies.isMapAvailable)
                 .environment(dependencies.vendorsViewModel)
         }
     }
