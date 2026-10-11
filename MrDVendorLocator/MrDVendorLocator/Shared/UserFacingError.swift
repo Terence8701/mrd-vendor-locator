@@ -20,7 +20,28 @@ nonisolated struct UserFacingError: Error, Equatable, Sendable {
 }
 
 extension UserFacingError {
-    init(_ error: APIError) {
+    /// Maps any error from the data layer. Unknown errors get generic, retryable copy.
+    init(_ error: any Error) {
+        if let error = error as? UserFacingError {
+            self = error
+        } else if let error = error as? APIError {
+            self.init(apiError: error)
+        } else {
+            self.init(
+                title: "Something went wrong",
+                message: "Please try again.",
+                action: .retry
+            )
+        }
+    }
+
+    static let favoriteUpdateFailed = UserFacingError(
+        title: "Couldn't update favorite",
+        message: "Your change wasn't saved. Please try again.",
+        action: .retry
+    )
+
+    private init(apiError error: APIError) {
         switch error {
         case .unauthorized:
             self.init(
