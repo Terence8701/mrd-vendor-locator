@@ -5,23 +5,42 @@
 
 import Foundation
 import Observation
+import os
 
 /// Shared by the list and map tabs, so loading, favorites and selection stay in sync.
 @Observable
 @MainActor
 final class VendorsViewModel {
+    /// A request for the map to focus a vendor. Each call to `select(_:)` makes a new one,
+    /// so selecting the same vendor again still re-centres the map.
+    nonisolated struct Selection: Equatable, Sendable {
+        let vendorID: Vendor.ID
+        let id = UUID()
+    }
+
     private(set) var state: ViewState<[Vendor]> = .idle
-    /// The vendor the map should focus on. Set from the list.
-    private(set) var selectedVendorID: Vendor.ID?
+    private(set) var selection: Selection?
+    /// True while vendors without coordinates are being geocoded.
+    private(set) var isResolvingLocations = false
     /// An error that shouldn't replace content already on screen, e.g. a failed
     /// refresh or favorite toggle. Shown as an alert.
     var transientError: UserFacingError?
 
     @ObservationIgnored private let repository: VendorRepository
+    @ObservationIgnored private let geocoder: Geocoding
     @ObservationIgnored private var loadTask: Task<Void, Never>?
+    /// Internal (not private) so tests can await geocoding.
+    @ObservationIgnored private(set) var locationTask: Task<Void, Never>?
 
-    init(repository: VendorRepository) {
+    nonisolated private static let logger = Logger(subsystem: "com.baloyi.mrdvendorlocator", category: "Geocoding")
+
+    init(repository: VendorRepository, geocoder: Geocoding) {
         self.repository = repository
+        self.geocoder = geocoder
+    }
+
+    var selectedVendorID: Vendor.ID? {
+        selection?.vendorID
     }
 
     var vendors: [Vendor] {
@@ -44,7 +63,7 @@ final class VendorsViewModel {
     }
 
     func select(_ vendorID: Vendor.ID) {
-        selectedVendorID = vendorID
+        selection = Selection(vendorID: vendorID)
     }
 
     /// Updates the UI immediately, then persists; rolls back if saving fails.
@@ -70,6 +89,7 @@ final class VendorsViewModel {
             let vendors = try await repository.fetchVendors()
             try Task.checkCancellation()
             state = vendors.isEmpty ? .empty : .loaded(vendors)
+            resolveMissingCoordinates()
         } catch is CancellationError {
             // Superseded by a newer load, which owns the state now.
         } catch {
@@ -79,6 +99,40 @@ final class VendorsViewModel {
             } else {
                 state = .failed(error)
             }
+        }
+    }
+
+    /// Geocodes every vendor without a coordinate, concurrently. The list is already on
+    /// screen; map pins appear as each lookup finishes. A failed lookup leaves that vendor
+    /// off the map rather than failing the screen.
+    private func resolveMissingCoordinates() {
+        locationTask?.cancel()
+        let pending = vendors.filter { $0.coordinate == nil }.map { (id: $0.id, address: $0.address) }
+        guard !pending.isEmpty else {
+            isResolvingLocations = false
+            return
+        }
+
+        isResolvingLocations = true
+        let geocoder = self.geocoder
+        locationTask = Task {
+            await withTaskGroup(of: (Vendor.ID, Coordinate?).self) { group in
+                for vendor in pending {
+                    group.addTask {
+                        do {
+                            return (vendor.id, try await geocoder.coordinate(for: vendor.address))
+                        } catch {
+                            Self.logger.error("Geocoding failed for \(vendor.id, privacy: .public): \(error.localizedDescription, privacy: .public)")
+                            return (vendor.id, nil)
+                        }
+                    }
+                }
+                for await (vendorID, coordinate) in group {
+                    guard !Task.isCancelled, let coordinate else { continue }
+                    updateVendor(vendorID) { $0.coordinate = coordinate }
+                }
+            }
+            if !Task.isCancelled { isResolvingLocations = false }
         }
     }
 

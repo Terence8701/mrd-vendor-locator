@@ -10,12 +10,14 @@ import XCTest
 final class VendorsViewModelTests: XCTestCase {
 
     private var repository: FakeVendorRepository!
+    private var geocoder: FakeGeocoder!
     private var viewModel: VendorsViewModel!
 
     override func setUp() {
         super.setUp()
         repository = FakeVendorRepository()
-        viewModel = VendorsViewModel(repository: repository)
+        geocoder = FakeGeocoder()
+        viewModel = VendorsViewModel(repository: repository, geocoder: geocoder)
     }
 
     func testLoadSuccessShowsVendors() async {
@@ -82,6 +84,41 @@ final class VendorsViewModelTests: XCTestCase {
 
         XCTAssertEqual(viewModel.selectedVendorID, "b")
     }
+
+    func testSelectingSameVendorAgainCreatesNewFocusRequest() {
+        viewModel.select("b")
+        let first = viewModel.selection
+
+        viewModel.select("b")
+
+        XCTAssertNotEqual(viewModel.selection, first, "Re-selecting must re-centre the map")
+    }
+
+    func testGeocodesOnlyVendorsMissingCoordinates() async {
+        let located = Vendor.stub(id: "a", coordinate: Coordinate(latitude: 1, longitude: 1))
+        let unlocated = Vendor.stub(id: "b", address: "2 Missing Rd")
+        repository.fetchResult = .success([located, unlocated])
+        geocoder.result = .success(Coordinate(latitude: -33.9, longitude: 18.4))
+
+        await viewModel.loadIfNeeded()
+        await viewModel.locationTask?.value
+
+        XCTAssertEqual(geocoder.requestedAddresses, ["2 Missing Rd"])
+        XCTAssertEqual(viewModel.vendors.last?.coordinate, Coordinate(latitude: -33.9, longitude: 18.4))
+        XCTAssertFalse(viewModel.isResolvingLocations)
+    }
+
+    func testFailedGeocodeKeepsVendorWithoutCoordinate() async {
+        repository.fetchResult = .success([.stub(id: "b")])
+        geocoder.result = .failure(GeocodingError.notFound)
+
+        await viewModel.loadIfNeeded()
+        await viewModel.locationTask?.value
+
+        XCTAssertEqual(viewModel.vendors.map(\.id), ["b"], "The list must not fail because of geocoding")
+        XCTAssertNil(viewModel.vendors.first?.coordinate)
+        XCTAssertFalse(viewModel.isResolvingLocations)
+    }
 }
 
 // MARK: - Test doubles
@@ -101,13 +138,28 @@ private final class FakeVendorRepository: VendorRepository, @unchecked Sendable 
     }
 }
 
+private final class FakeGeocoder: Geocoding, @unchecked Sendable {
+    var result: Result<Coordinate, Error> = .failure(GeocodingError.notFound)
+    private(set) var requestedAddresses: [String] = []
+
+    func coordinate(for address: String) async throws -> Coordinate {
+        requestedAddresses.append(address)
+        return try result.get()
+    }
+}
+
 private extension Vendor {
-    static func stub(id: String, isFavorite: Bool = false) -> Vendor {
+    static func stub(
+        id: String,
+        address: String = "1 Test St",
+        coordinate: Coordinate? = nil,
+        isFavorite: Bool = false
+    ) -> Vendor {
         Vendor(
             id: id,
             name: "Vendor \(id)",
-            address: "1 Test St",
-            coordinate: nil,
+            address: address,
+            coordinate: coordinate,
             isFavorite: isFavorite,
             updatedAt: Date(timeIntervalSince1970: 0)
         )
