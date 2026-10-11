@@ -10,15 +10,13 @@ import GooglePlacesSwift
 /// Everything else receives its dependencies through `init`, typed as protocols.
 @MainActor
 final class AppDependencies {
-    let tokenStore: TokenStore
     let vendorsViewModel: VendorsViewModel
+    let settingsViewModel: SettingsViewModel
     /// False when no Google API key is configured; the Map tab then explains why.
     let isMapAvailable: Bool
 
     init() {
-        // Temporary: a demo token in memory so the stub API accepts requests.
-        // Replaced by KeychainTokenStore once the Settings screen exists.
-        let tokenStore = InMemoryTokenStore(token: "demo-session-token")
+        let tokenStore = KeychainTokenStore()
 
         let apiClient = URLSessionAPIClient(
             baseURL: StubURLProtocol.baseURL,
@@ -42,10 +40,14 @@ final class AppDependencies {
             isMapAvailable = false
         }
 
-        self.tokenStore = tokenStore
-        self.vendorsViewModel = VendorsViewModel(
+        let vendorsViewModel = VendorsViewModel(
             repository: repository,
             geocoder: CachingGeocoder(wrapping: geocoder)
         )
+        self.vendorsViewModel = vendorsViewModel
+        // Saving or clearing the token reloads vendors, so the change shows immediately.
+        self.settingsViewModel = SettingsViewModel(tokenStore: tokenStore) {
+            await vendorsViewModel.reload()
+        }
     }
 }

@@ -15,6 +15,7 @@ struct MrDVendorLocatorApp: App {
         WindowGroup {
             RootTabView(isMapAvailable: dependencies.isMapAvailable)
                 .environment(dependencies.vendorsViewModel)
+                .environment(dependencies.settingsViewModel)
         }
     }
 }
