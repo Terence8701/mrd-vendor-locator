@@ -6,7 +6,7 @@
 import Foundation
 import os
 
-/// A non-persistent `TokenStore` for tests and previews.
+/// A non-persistent `TokenStore` for tests and previews. The app uses `KeychainTokenStore`.
 nonisolated final class InMemoryTokenStore: TokenStore {
     private let token: OSAllocatedUnfairLock<String?>
 
