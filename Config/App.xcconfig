@@ -16,3 +16,6 @@ GMS_API_KEY =
 
 
 #include? "Secrets.xcconfig"
+
+// Merged with the generated Info.plist. Exposes the key to the app as `GMSApiKey`.
+INFOPLIST_FILE = ../Config/Info.plist

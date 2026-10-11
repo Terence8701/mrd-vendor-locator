@@ -10,6 +10,8 @@ struct RootTabView: View {
         case vendors, map, settings
     }
 
+    let isMapAvailable: Bool
+
     @Environment(VendorsViewModel.self) private var vendorsViewModel
     @State private var selectedTab: AppTab = .vendors
 
@@ -25,8 +27,7 @@ struct RootTabView: View {
             .tabItem { Label("Vendors", systemImage: "list.bullet") }
             .tag(AppTab.vendors)
 
-            // Replaced by VendorMapView in Phase 3.
-            ContentUnavailableView("Map", systemImage: "map", description: Text("Coming soon."))
+            VendorMapScreen(isMapAvailable: isMapAvailable)
                 .tabItem { Label("Map", systemImage: "map") }
                 .tag(AppTab.map)
 
