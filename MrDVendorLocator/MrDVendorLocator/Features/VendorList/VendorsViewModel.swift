@@ -18,8 +18,19 @@ final class VendorsViewModel {
         let id = UUID()
     }
 
+    enum Filter: String, CaseIterable, Identifiable {
+        case all = "All"
+        case favorites = "Favorites"
+
+        var id: Self { self }
+    }
+
     private(set) var state: ViewState<[Vendor]> = .idle
     private(set) var selection: Selection?
+    /// A request for the list to scroll to a vendor, made from the map.
+    private(set) var listFocus: Selection?
+    var searchText = ""
+    var filter: Filter = .all
     /// True while vendors without coordinates are being geocoded.
     private(set) var isResolvingLocations = false
     /// An error that shouldn't replace content already on screen, e.g. a failed
@@ -47,6 +58,26 @@ final class VendorsViewModel {
         if case .loaded(let vendors) = state { vendors } else { [] }
     }
 
+    var selectedVendor: Vendor? {
+        vendors.first { $0.id == selectedVendorID }
+    }
+
+    /// The vendors the list shows: the current filter, then the search text matched
+    /// against name and address, ignoring case and accents.
+    var visibleVendors: [Vendor] {
+        let query = searchText.trimmingCharacters(in: .whitespacesAndNewlines)
+        return vendors.filter { vendor in
+            (filter == .all || vendor.isFavorite)
+                && (query.isEmpty
+                    || vendor.name.localizedStandardContains(query)
+                    || vendor.address.localizedStandardContains(query))
+        }
+    }
+
+    var isFiltering: Bool {
+        filter != .all || !searchText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+    }
+
     /// Loads once, on first appearance.
     func loadIfNeeded() async {
         guard case .idle = state else { return }
@@ -64,6 +95,20 @@ final class VendorsViewModel {
 
     func select(_ vendorID: Vendor.ID) {
         selection = Selection(vendorID: vendorID)
+    }
+
+    func clearSelection() {
+        selection = nil
+    }
+
+    /// Asks the list to scroll to a vendor. Clears the search and filter first if they
+    /// would hide it.
+    func revealInList(_ vendorID: Vendor.ID) {
+        if !visibleVendors.contains(where: { $0.id == vendorID }) {
+            searchText = ""
+            filter = .all
+        }
+        listFocus = Selection(vendorID: vendorID)
     }
 
     /// Updates the UI immediately, then persists; rolls back if saving fails.

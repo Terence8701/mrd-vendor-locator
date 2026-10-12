@@ -133,6 +133,84 @@ final class VendorsViewModelTests: XCTestCase {
         XCTAssertNil(viewModel.vendors.first?.coordinate)
         XCTAssertFalse(viewModel.isResolvingLocations)
     }
+
+    // MARK: - Search and filter
+
+    func testFavoritesFilterShowsOnlyFavorites() async {
+        repository.fetchResult = .success([.stub(id: "a", isFavorite: true), .stub(id: "b")])
+        await viewModel.loadIfNeeded()
+
+        viewModel.filter = .favorites
+
+        XCTAssertEqual(viewModel.visibleVendors.map(\.id), ["a"])
+    }
+
+    func testSearchMatchesNameOrAddressIgnoringCaseAndAccents() async {
+        repository.fetchResult = .success([
+            .stub(id: "a", name: "Sea Point Sushi Bar"),
+            .stub(id: "b", name: "Harbour Grill", address: "19 Dock Rd, Cape Town"),
+            .stub(id: "c", name: "Café Rosebank"),
+        ])
+        await viewModel.loadIfNeeded()
+
+        viewModel.searchText = "SUSHI"
+        XCTAssertEqual(viewModel.visibleVendors.map(\.id), ["a"])
+
+        viewModel.searchText = "dock rd"
+        XCTAssertEqual(viewModel.visibleVendors.map(\.id), ["b"])
+
+        viewModel.searchText = "cafe"
+        XCTAssertEqual(viewModel.visibleVendors.map(\.id), ["c"])
+    }
+
+    func testSearchAndFilterCombine() async {
+        repository.fetchResult = .success([
+            .stub(id: "a", name: "Pizza One", isFavorite: true),
+            .stub(id: "b", name: "Pizza Two"),
+        ])
+        await viewModel.loadIfNeeded()
+
+        viewModel.filter = .favorites
+        viewModel.searchText = "pizza"
+
+        XCTAssertEqual(viewModel.visibleVendors.map(\.id), ["a"])
+        XCTAssertTrue(viewModel.isFiltering)
+    }
+
+    func testRevealInListClearsFiltersThatHideTheVendor() async {
+        repository.fetchResult = .success([.stub(id: "a", isFavorite: true), .stub(id: "b")])
+        await viewModel.loadIfNeeded()
+        viewModel.filter = .favorites
+        viewModel.searchText = "Vendor a"
+
+        viewModel.revealInList("b")
+
+        XCTAssertEqual(viewModel.filter, .all)
+        XCTAssertEqual(viewModel.searchText, "")
+        XCTAssertEqual(viewModel.listFocus?.vendorID, "b")
+    }
+
+    func testRevealInListKeepsFiltersWhenVendorIsVisible() async {
+        repository.fetchResult = .success([.stub(id: "a", isFavorite: true), .stub(id: "b")])
+        await viewModel.loadIfNeeded()
+        viewModel.filter = .favorites
+
+        viewModel.revealInList("a")
+
+        XCTAssertEqual(viewModel.filter, .favorites)
+        XCTAssertEqual(viewModel.listFocus?.vendorID, "a")
+    }
+
+    func testClearSelectionRemovesSelectedVendor() async {
+        repository.fetchResult = .success([.stub(id: "a")])
+        await viewModel.loadIfNeeded()
+        viewModel.select("a")
+        XCTAssertEqual(viewModel.selectedVendor?.id, "a")
+
+        viewModel.clearSelection()
+
+        XCTAssertNil(viewModel.selectedVendor)
+    }
 }
 
 // MARK: - Test doubles
@@ -165,13 +243,14 @@ private final class FakeGeocoder: Geocoding, @unchecked Sendable {
 private extension Vendor {
     static func stub(
         id: String,
+        name: String? = nil,
         address: String = "1 Test St",
         coordinate: Coordinate? = nil,
         isFavorite: Bool = false
     ) -> Vendor {
         Vendor(
             id: id,
-            name: "Vendor \(id)",
+            name: name ?? "Vendor \(id)",
             address: address,
             coordinate: coordinate,
             isFavorite: isFavorite,
