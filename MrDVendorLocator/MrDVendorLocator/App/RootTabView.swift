@@ -31,8 +31,7 @@ struct RootTabView: View {
                 .tabItem { Label("Map", systemImage: "map") }
                 .tag(AppTab.map)
 
-            // Replaced by SettingsView in Phase 4.
-            ContentUnavailableView("Settings", systemImage: "gearshape", description: Text("Coming soon."))
+            SettingsView()
                 .tabItem { Label("Settings", systemImage: "gearshape") }
                 .tag(AppTab.settings)
         }
