@@ -11,10 +11,14 @@ import SwiftUI
 struct VendorMapView: UIViewRepresentable {
     let vendors: [Vendor]
     let selection: VendorsViewModel.Selection?
+    /// A new value re-frames the camera around all vendors.
+    let fitRequest: UUID?
+    let mapType: GMSMapViewType
     let onSelectVendor: (Vendor.ID) -> Void
+    let onDeselect: () -> Void
 
     func makeCoordinator() -> MapCoordinator {
-        MapCoordinator(onSelectVendor: onSelectVendor)
+        MapCoordinator(onSelectVendor: onSelectVendor, onDeselect: onDeselect)
     }
 
     func makeUIView(context: Context) -> GMSMapView {
@@ -32,6 +36,8 @@ struct VendorMapView: UIViewRepresentable {
 
     func updateUIView(_ mapView: GMSMapView, context: Context) {
         context.coordinator.onSelectVendor = onSelectVendor
-        context.coordinator.update(mapView, vendors: vendors, selection: selection)
+        context.coordinator.onDeselect = onDeselect
+        if mapView.mapType != mapType { mapView.mapType = mapType }
+        context.coordinator.update(mapView, vendors: vendors, selection: selection, fitRequest: fitRequest)
     }
 }
