@@ -1,0 +1,47 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    name: Build and test
+    runs-on: macos-26
+    timeout-minutes: 30
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Select Xcode
+        uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: latest-stable
+
+      # No Google API key on CI: the app builds without one and tests never call Google.
+      - name: Pick an iPhone simulator
+        id: simulator
+        run: |
+          udid=$(xcrun simctl list devices available --json | jq -r '
+            .devices | to_entries
+            | map(select(.key | test("iOS")))
+            | sort_by(.key) | reverse
+            | map(.value[] | select(.name | startswith("iPhone")))
+            | first | .udid')
+          echo "Using simulator $udid"
+          echo "udid=$udid" >> "$GITHUB_OUTPUT"
+
+      # Simulator builds are signed locally (no certificate needed). Turning signing off
+      # entirely would break the Keychain tests, which need the app's entitlements.
+      - name: Test
+        run: |
+          set -o pipefail
+          xcodebuild test \
+            -project MrDVendorLocator/MrDVendorLocator.xcodeproj \
+            -scheme MrDVendorLocator \
+            -destination "id=${{ steps.simulator.outputs.udid }}" \
+            -parallel-testing-enabled NO
