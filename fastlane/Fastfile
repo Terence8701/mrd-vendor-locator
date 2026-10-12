@@ -1,0 +1,25 @@
+default_platform(:ios)
+
+platform :ios do
+  desc "Run the unit tests on a simulator"
+  lane :test do
+    run_tests(
+      project: "MrDVendorLocator/MrDVendorLocator.xcodeproj",
+      scheme: "MrDVendorLocator",
+      parallel_testing: false
+    )
+  end
+
+  desc "Build the app for the simulator, without signing"
+  lane :build do
+    build_app(
+      project: "MrDVendorLocator/MrDVendorLocator.xcodeproj",
+      scheme: "MrDVendorLocator",
+      configuration: "Debug",
+      destination: "generic/platform=iOS Simulator",
+      skip_package_ipa: true,
+      skip_archive: true,
+      skip_codesigning: true
+    )
+  end
+end
