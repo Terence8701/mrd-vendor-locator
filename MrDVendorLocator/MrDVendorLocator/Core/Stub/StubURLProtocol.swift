@@ -12,7 +12,12 @@ import os
 /// `Bearer` token (401 otherwise), adds latency so loading states are visible, and can simulate
 /// failures for demoing error states.
 nonisolated final class StubURLProtocol: URLProtocol, @unchecked Sendable {
-    static let baseURL = URL(string: "https://api.mrd.local")!
+    static let baseURL: URL = {
+        guard let url = URL(string: "https://api.mrd.local") else {
+            preconditionFailure("The stub base URL is a constant and must be valid.")
+        }
+        return url
+    }()
 
     enum Scenario: String, CaseIterable, Sendable {
         case success
