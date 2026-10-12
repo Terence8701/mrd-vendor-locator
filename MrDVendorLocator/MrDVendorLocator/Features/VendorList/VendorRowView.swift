@@ -15,17 +15,21 @@ struct VendorRowView: View {
             // Two separate buttons: the row selects, the heart toggles. Non-default
             // button styles stop List from turning the whole row into one tap target.
             Button(action: onSelect) {
-                VStack(alignment: .leading, spacing: 4) {
-                    Text(vendor.name)
-                        .font(.headline)
-                    Text(vendor.address)
-                        .font(.subheadline)
-                        .foregroundStyle(.secondary)
-                    Text("Updated \(vendor.updatedAt, format: .relative(presentation: .named))")
-                        .font(.caption)
-                        .foregroundStyle(.tertiary)
+                HStack(spacing: 12) {
+                    VendorTileView(vendor: vendor)
+
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text(vendor.name)
+                            .font(.headline)
+                        Text(vendor.address)
+                            .font(.subheadline)
+                            .foregroundStyle(.secondary)
+                        Text("Updated \(vendor.updatedAt, format: .relative(presentation: .named))")
+                            .font(.caption)
+                            .foregroundStyle(.tertiary)
+                    }
+                    .frame(maxWidth: .infinity, alignment: .leading)
                 }
-                .frame(maxWidth: .infinity, alignment: .leading)
                 .contentShape(Rectangle())
             }
             .buttonStyle(.plain)
