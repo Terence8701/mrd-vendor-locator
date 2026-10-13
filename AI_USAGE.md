@@ -65,4 +65,7 @@ Each of these passed the compiler and every unit test:
 - **"10 venders":** SwiftUI's automatic plural inflection doesn't know the word "vendor". Caught from a screenshot and replaced with explicit wording.
 - **A force unwrap** in the stub's base URL went against the project's own convention, and was removed.
 
-**What I learned:** run the CI command locally before trusting the workflow, and look at the screens, not just the test results.
+And one that only real CI could catch:
+- **Project format:** the first GitHub Actions run failed because Xcode 27 saves the project in a newer file format (110) that the runner's Xcode 26.6 can't open. Nothing in the project needed Xcode 27, so I set the project file back to the Xcode 16 format, confirmed all tests still passed locally, and pushed. CI went green, and the README now states Xcode 26 or later.
+
+**What I learned:** run the CI command locally before trusting the workflow, but still let real CI run on a clean machine, because my machine had a newer Xcode than the runner. And look at the screens, not just the test results.
