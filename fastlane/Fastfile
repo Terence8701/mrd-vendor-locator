@@ -2,10 +2,12 @@ default_platform(:ios)
 
 platform :ios do
   desc "Run the unit tests on a simulator"
-  lane :test do
+  desc "Optionally pick one: fastlane test device:\"iPhone 17 Pro (26.5)\""
+  lane :test do |options|
     run_tests(
       project: "MrDVendorLocator/MrDVendorLocator.xcodeproj",
       scheme: "MrDVendorLocator",
+      device: options[:device],
       parallel_testing: false
     )
   end
