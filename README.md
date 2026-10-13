@@ -4,7 +4,14 @@
 
 A SwiftUI iOS app for browsing Mr D vendors, seeing them on a Google Map, and managing a session token stored in the iOS Keychain.
 
+<p align="center">
+  <img src="Screenshots/design-concept.jpg" width="720" alt="Design concept for the vendor list, empty state and map, in light and dark mode">
+</p>
+<p align="center"><sub><em>Design concept. The shipped app uses initials tiles instead of photos and leaves out the location button; see the screenshots below and <a href="SOLUTION.md">SOLUTION.md</a>.</em></sub></p>
+
 Built for the Mr D Senior iOS Engineer assignment. Design decisions and trade-offs are in [SOLUTION.md](SOLUTION.md); how AI was used is in [AI_USAGE.md](AI_USAGE.md).
+
+## Screenshots
 
 | Vendors | Map | Session required |
 |---|---|---|
