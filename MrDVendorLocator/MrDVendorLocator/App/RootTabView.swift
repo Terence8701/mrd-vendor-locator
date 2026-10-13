@@ -27,7 +27,13 @@ struct RootTabView: View {
             .tabItem { Label("Vendors", systemImage: "list.bullet") }
             .tag(AppTab.vendors)
 
-            VendorMapScreen(isMapAvailable: isMapAvailable)
+            VendorMapScreen(
+                isMapAvailable: isMapAvailable,
+                onShowInList: { vendorID in
+                    vendorsViewModel.revealInList(vendorID)
+                    selectedTab = .vendors
+                }
+            )
                 .tabItem { Label("Map", systemImage: "map") }
                 .tag(AppTab.map)
 
