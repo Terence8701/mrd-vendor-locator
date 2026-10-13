@@ -18,9 +18,9 @@ struct SettingsView: View {
                     HStack {
                         Group {
                             if viewModel.isTokenRevealed {
-                                TextField("Session token", text: $viewModel.draftToken)
+                                TextField("Session token", text: $viewModel.draftToken, prompt: Text("e.g. mrD_token_example_123"))
                             } else {
-                                SecureField("Session token", text: $viewModel.draftToken)
+                                SecureField("Session token", text: $viewModel.draftToken, prompt: Text("e.g. mrD_token_example_123"))
                             }
                         }
                         .textInputAutocapitalization(.never)
@@ -52,7 +52,7 @@ struct SettingsView: View {
                             viewModel.hasSavedToken ? "Token saved" : "No token saved",
                             systemImage: viewModel.hasSavedToken ? "checkmark.shield" : "exclamationmark.shield"
                         )
-                        Text("Stored in the iOS Keychain on this device only. Any value works with the local stub API.")
+                        Text("Stored securely in the iOS Keychain on this device only.")
                         if let error = viewModel.errorMessage {
                             Text(error).foregroundStyle(.red)
                         }
@@ -91,7 +91,7 @@ private struct StubScenarioSection: View {
         } header: {
             Text("Developer")
         } footer: {
-            Text("Applies to the next request. Pull to refresh on the Vendors tab to see it.")
+            Text("Simulates API responses to demonstrate error handling. Available in debug builds only.")
         }
     }
 }

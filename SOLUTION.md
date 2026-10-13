@@ -9,7 +9,9 @@ A SwiftUI app to browse Mr D vendors, see them on a Google Map, and manage a ses
 | Task 1: vendor list, favorites, reload, friendly errors, light/dark | `Features/VendorList`, `VendorsViewModel`, `UserFacingError` |
 | Task 2: Google Map, markers, recenter on select, one Places feature | `Features/Map`, `Core/Places` |
 | Task 3: Keychain token, Settings screen, token used by the network layer | `Core/Security`, `Features/Settings`, `URLSessionAPIClient` |
-| Unit tests (XCTest) | `MrDVendorLocatorTests` — 34 tests |
+| Bonus: map ↔ list highlighting | Map card → list scroll + highlight; list → map recenter |
+| Bonus: CI + Fastlane | `.github/workflows/ci.yml`, `fastlane/Fastfile` |
+| Unit tests (XCTest) | `MrDVendorLocatorTests` — 40 tests |
 
 ## Architecture
 
@@ -84,7 +86,10 @@ Tests never call Google.
 - `GMSMapView` wrapped in a `UIViewRepresentable`; a coordinator is the `GMSMapViewDelegate`.
 - **Markers are diffed by vendor ID** on each update instead of being recreated, so favorites and newly geocoded vendors update in place without flicker.
 - Selection is a value with its own ID, so selecting the **same** vendor twice still recenters the map.
-- Favorites use a different marker colour.
+- Favorites use a different marker colour. Each marker's VoiceOver label is the vendor name, plus "favorite" where it applies.
+- Tapping a marker shows a **SwiftUI card** for the vendor instead of Google's info window, so it matches the app's styling and dark mode. Tapping the map closes it.
+- **Map → list:** tapping the card switches to the list, scrolls to that vendor and highlights it. If the search or filter would hide the vendor, they are cleared first.
+- Map controls: re-frame all vendors, and switch between standard and satellite.
 - The Maps SDK follows the system appearance, so light/dark switches live without extra code.
 
 ## Session token and Keychain
@@ -94,18 +99,22 @@ Tests never call Google.
 - Settings shows the token masked with a reveal toggle, plus Save and Clear (with confirmation). Saving or clearing reloads vendors immediately.
 - A 401 clears the list and shows **Session required → Open Settings**, so data is never left on screen after the session is rejected.
 
+## Search and filter
+
+The list has a search bar (name or address, ignoring case and accents) and **All / Favorites** chips with a live count. The filtering lives in the view model as a computed `visibleVendors`, so it is unit-tested without any UI. An empty result says why: no search matches, or no favorites yet.
+
 ## Favorites
 
 Toggling is **optimistic**: the heart updates immediately, and rolls back with an alert if the save fails. Favorites are stored locally as overrides on top of the API data (`UserDefaults`), since the stub API is read-only.
 
 ## Testing
 
-XCTest only, 34 tests, no network or Google calls:
+XCTest only, 40 tests, no network or Google calls:
 
 | Suite | Covers |
 |---|---|
 | `VendorDecodingTests` | Full vendor, missing coordinate, ISO 8601 dates, malformed JSON |
-| `VendorsViewModelTests` | Load states, empty, errors, 401 clearing content, selection (incl. re-selecting the same vendor), optimistic favorites + rollback, geocoding only missing coordinates, a failed geocode not dropping the vendor |
+| `VendorsViewModelTests` | Load states, empty, errors, 401 clearing content, selection (incl. re-selecting the same vendor), optimistic favorites + rollback, geocoding only missing coordinates, a failed geocode not dropping the vendor, search (case/accent-insensitive), the favorites filter, revealing a vendor hidden by filters |
 | `StubAPIClientTests` | 401 without token, success, 500, offline — through the real `URLSession` client |
 | `CachingGeocoderTests` | Cache hits, address normalisation, in-flight sharing, failures not cached |
 | `KeychainTokenStoreTests` | Save, read, overwrite, clear (isolated service per run) |
@@ -123,4 +132,5 @@ XCTest only, 34 tests, no network or Google calls:
 - **No offline cache of vendors.** Offline shows a friendly error with retry. Next step: persist the last successful response and show it with a "last updated" banner.
 - **`VendorsViewModel` owns loading, geocoding and favorites.** Fine at this size; if it grew, geocoding would move into its own coordinator.
 - **No user location / "nearby" sorting.** Not required by any task, and it adds a permission flow. Next step: `CLLocationManager` behind a protocol and sort by distance.
+- **No vendor images.** The API has no image URLs, so each vendor gets a coloured initials tile rather than invented photos. Next step: an optional `imageURL` in the model, loaded with `AsyncImage`, keeping the initials tile as the placeholder and fallback.
 - **No marker clustering** — unnecessary for ten vendors; Google's iOS Utils library would be the route at scale.

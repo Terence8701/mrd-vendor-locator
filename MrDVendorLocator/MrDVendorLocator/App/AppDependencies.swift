@@ -28,8 +28,8 @@ final class AppDependencies {
             favoritesStore: UserDefaultsFavoritesStore()
         )
 
-        // With a key: real Google Maps and Places. Without one: no map tiles, and
-        // geocoding falls back to an offline table so the app still runs.
+        // With a key: real Google Maps and Places. Without one: the Map tab explains the
+        // key is missing, and geocoding falls back to an offline table so the app still runs.
         let geocoder: Geocoding
         if let apiKey = GoogleMapsPlatform.apiKey() {
             GoogleMapsPlatform.configure(apiKey: apiKey)
