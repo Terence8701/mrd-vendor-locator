@@ -123,7 +123,7 @@ XCTest only, 40 tests, no network or Google calls:
 ## Deviations from the brief
 
 - **iOS 17.0 instead of iOS 16.0.** Xcode 27 can't target iOS 16. Once iOS 17 was the floor, I used it deliberately: view models use the Observation framework (`@Observable`) rather than `ObservableObject`. Everything else would work on iOS 16.
-- **Xcode 27 instead of Xcode 15+.** The Google Maps/Places SDKs (10+) need Xcode 26 or later, and the project was created with Xcode 27.
+- **Xcode 26+ instead of Xcode 15+.** The Google Maps/Places SDKs (10+) need Xcode 26 or later. The app was built with Xcode 27, but the project file is kept in the Xcode 16 format so Xcode 26 (and CI) can open it.
 
 ## Trade-offs and what I'd do next
 

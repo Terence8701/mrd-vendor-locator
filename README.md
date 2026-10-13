@@ -30,8 +30,8 @@ The API is a local stub (`StubURLProtocol`), so no backend is needed. It require
 
 ## Requirements
 
-- **Xcode 27** (the project was created with it; the Google Maps and Places SDKs need Xcode 26 or later).
-- **iOS 17.0+** deployment target. The brief asks for iOS 16, which Xcode 27 can no longer target — see [SOLUTION.md](SOLUTION.md#deviations-from-the-brief).
+- **Xcode 26 or later** (the Google Maps and Places SDKs need it). Built with Xcode 27; the project file is kept in the Xcode 16 format (`objectVersion = 77`) so Xcode 26 and CI can open it.
+- **iOS 17.0+** deployment target. The brief asks for iOS 16, which Xcode 27 (used to build it) can no longer target — see [SOLUTION.md](SOLUTION.md#deviations-from-the-brief).
 - Dependencies come from Swift Package Manager and resolve on first open: Google Maps SDK and Google Places SDK for iOS (11.2.0).
 
 ## Setup
