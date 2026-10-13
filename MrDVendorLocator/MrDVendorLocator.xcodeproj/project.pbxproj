@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 110;
+	objectVersion = 77;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -515,5 +515,4 @@
 /* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 11F549CD307ACB49002850FC /* Project object */;
-	validationLevel = 1;
 }
