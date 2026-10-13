@@ -11,8 +11,8 @@ Built for the Mr D Senior iOS Engineer assignment. Design decisions and trade-of
 
 ## Features
 
-- **Vendor list** with favorites, pull to refresh, and loading, empty and error states with friendly messages.
-- **Google Map** with a marker per vendor. Tapping a vendor in the list switches to the map and recenters on it.
+- **Vendor list** with search, an All / Favorites filter, favorites, pull to refresh, and loading, empty and error states with friendly messages.
+- **Google Map** with a marker per vendor. Tapping a vendor in the list switches to the map and recenters on it; tapping a marker shows a vendor card, which leads back to that vendor in the list.
 - **Places address → coordinates:** vendors that only have an address are geocoded with the Google Places SDK and appear on the map.
 - **Session token in the Keychain**, managed from Settings (masked by default, reveal, save, clear). Every API request sends it as a Bearer token.
 - **Light and dark mode**, switching live.
@@ -44,7 +44,7 @@ In Debug builds, **Settings → Developer → Stub API response** switches the s
 
 ## Tests
 
-34 XCTest unit tests. They never call Google or the network.
+40 XCTest unit tests. They never call Google or the network.
 
 - In Xcode: **Cmd+U**.
 - From the command line:
@@ -73,6 +73,6 @@ MrDVendorLocator/
       Places/               Geocoding, GooglePlacesGeocoder, CachingGeocoder, MockGeocoder
     Data/                   Vendor model, VendorRepository, FavoritesStore
     Features/               VendorList, Map, Settings (views + view models)
-    Shared/                 ViewState, UserFacingError
+    Shared/                 ViewState, UserFacingError, DesignSystem (vendor tile)
   MrDVendorLocatorTests/    Unit tests
 ```
