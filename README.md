@@ -1,5 +1,7 @@
 # Mr D Vendor Locator
 
+[![CI](https://github.com/Terence8701/mrd-vendor-locator/actions/workflows/ci.yml/badge.svg)](https://github.com/Terence8701/mrd-vendor-locator/actions/workflows/ci.yml)
+
 A SwiftUI iOS app for browsing Mr D vendors, seeing them on a Google Map, and managing a session token stored in the iOS Keychain.
 
 Built for the Mr D Senior iOS Engineer assignment. Design decisions and trade-offs are in [SOLUTION.md](SOLUTION.md); how AI was used is in [AI_USAGE.md](AI_USAGE.md).
@@ -27,7 +29,11 @@ The API is a local stub (`StubURLProtocol`), so no backend is needed. It require
 
 ## Setup
 
-1. Clone the repo and open `MrDVendorLocator/MrDVendorLocator.xcodeproj`.
+1. Clone the repo and open the project:
+   ```
+   git clone https://github.com/Terence8701/mrd-vendor-locator.git
+   open mrd-vendor-locator/MrDVendorLocator/MrDVendorLocator.xcodeproj
+   ```
 2. **Add a Google Maps Platform API key** (optional, but needed for the map):
    - In Google Cloud, enable **Maps SDK for iOS** and **Places API (New)**, and restrict the key to the bundle ID `com.baloyi.mrdvendorlocator`.
    - Create `Config/Secrets.xcconfig` (it is gitignored) containing:
@@ -40,7 +46,7 @@ The API is a local stub (`StubURLProtocol`), so no backend is needed. It require
 
 ### Demoing error states
 
-In Debug builds, **Settings → Developer → Stub API response** switches the stub to a **500** or **offline** response. Pull to refresh on the Vendors tab to see it, then set it back to **Success** and tap **Try Again**.
+In Debug builds, **Settings → Developer → Stub API response** switches the stub to a **500** or **offline** response. Pull to refresh on the Vendors tab to see the error, then set it back to **Success**.
 
 ## Tests
 
@@ -55,7 +61,12 @@ In Debug builds, **Settings → Developer → Stub API response** switches the s
     -destination 'platform=iOS Simulator,name=iPhone 17 Pro' \
     -parallel-testing-enabled NO
   ```
-- With Fastlane (`bundle install` first): `bundle exec fastlane test`, or `bundle exec fastlane build` for an unsigned simulator build.
+- With Fastlane (`brew install fastlane`, or `bundle install` and prefix with `bundle exec`):
+  ```
+  fastlane test                                  # unit tests on the default simulator
+  fastlane test device:"iPhone 17 Pro (26.5)"    # or a specific one
+  fastlane build                                 # unsigned simulator build
+  ```
 
 **CI:** GitHub Actions ([`.github/workflows/ci.yml`](.github/workflows/ci.yml)) runs the tests on every push and pull request.
 
